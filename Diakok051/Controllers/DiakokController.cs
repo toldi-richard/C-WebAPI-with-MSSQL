@@ -24,9 +24,9 @@ namespace Diakok051.Controllers
         }
 
 
-        // GET: api/Diakok/szama
+        // GET: api/Diakok
         [HttpGet]
-        public JsonResult GetDiakokSzama()
+        public JsonResult GetDiakok()
         {
             string query = @"SELECT * FROM Diak";
             DataTable diakok = new DataTable();
