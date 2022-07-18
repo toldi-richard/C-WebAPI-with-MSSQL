@@ -1,0 +1,5 @@
+Scaffold-DbContext "Server=DESKTOP-M6UKM0B\MSSQL;Database=Diakok;Trusted_Connection=True;"Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models 
+
+
+
+Scaffold-DbContext "Server=DESKTOP-M6UKM0B\MSSQL;Database=Diakok;Trusted_Connection=True;"Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -DataAnnotations -UseDatabaseNames -Force -NoPluralize
