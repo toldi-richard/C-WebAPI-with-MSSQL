@@ -28,7 +28,9 @@ namespace Diakok051.Controllers
         [HttpGet]
         public JsonResult GetDiakok()
         {
-            string query = @"SELECT * FROM Diak";
+            string query = @"SELECT Diak.DiakNev AS Diák, Osztaly.OsztalyJeloles AS Osztály
+                             FROM Diak
+                             INNER JOIN Osztaly ON Diak.OsztalyID = Osztaly.OsztalyID;";
             DataTable diakok = new DataTable();
 
             string sqlDataSource = _configuration.GetConnectionString("DiakokDb");
