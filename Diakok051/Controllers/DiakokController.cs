@@ -23,6 +23,7 @@ namespace Diakok051.Controllers
             _configuration = configuration;
         }
 
+        // https://www.youtube.com/watch?v=TxgL1O0G_Yg&ab_channel=ArtofEngineer   -   Tutorial
 
         //GET: api/Diakok
         [HttpGet]
@@ -67,6 +68,37 @@ namespace Diakok051.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myCommand.Parameters.AddWithValue("@osztaly", diak.OsztalyID);
+                    myCommand.Parameters.AddWithValue("@diak", diak.DiakNev);
+                    myReader = myCommand.ExecuteReader();
+                    diakok.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(diakok);
+        }
+
+        //PUT: api/Diakok
+        [HttpPut]
+        public JsonResult PutDiak(Diak diak)
+        {
+            string query = @"UPDATE Diak 
+                            SET OsztalyID = @osztaly,
+                                DiakNev = @diak
+                            WHERE DiakID = @diakid;";
+            DataTable diakok = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("DiakokDb");
+            SqlDataReader myReader;
+
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@diakid", diak.DiakID);
                     myCommand.Parameters.AddWithValue("@osztaly", diak.OsztalyID);
                     myCommand.Parameters.AddWithValue("@diak", diak.DiakNev);
                     myReader = myCommand.ExecuteReader();
