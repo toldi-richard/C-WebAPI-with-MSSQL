@@ -24,7 +24,7 @@ namespace Diakok051.Controllers
         }
 
 
-        // GET: api/Diakok
+        //GET: api/Diakok
         [HttpGet]
         public JsonResult GetDiakok()
         {
@@ -41,6 +41,34 @@ namespace Diakok051.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myReader = myCommand.ExecuteReader();
+                    diakok.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(diakok);
+        }        
+        
+        
+        //POST: api/Diakok
+        [HttpPost]
+        public JsonResult PostDiak(Diak diak)
+        {
+            string query = @"INSERT INTO Diak VALUES(@osztaly,@diak);";
+            DataTable diakok = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("DiakokDb");
+            SqlDataReader myReader;
+
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@osztaly", diak.OsztalyID);
+                    myCommand.Parameters.AddWithValue("@diak", diak.DiakNev);
                     myReader = myCommand.ExecuteReader();
                     diakok.Load(myReader);
                     myReader.Close();
