@@ -50,9 +50,9 @@ namespace Diakok051.Controllers
             }
 
             return new JsonResult(diakok);
-        }        
-        
-        
+        }
+
+
         //POST: api/Diakok
         [HttpPost]
         public JsonResult PostDiak(Diak diak)
@@ -77,7 +77,7 @@ namespace Diakok051.Controllers
                 }
             }
 
-            return new JsonResult(diakok);
+            return new JsonResult("Added Successfully!");
         }
 
         //PUT: api/Diakok
@@ -108,7 +108,33 @@ namespace Diakok051.Controllers
                 }
             }
 
-            return new JsonResult(diakok);
+            return new JsonResult("Updated Successfully!");
+        }
+
+        //DELETE: api/Diakok
+        [HttpDelete("{id}")]
+        public JsonResult DeleteDiak(int id)
+        {
+            string query = @"DELETE FROM Diak WHERE DiakID = @diakid;";
+            DataTable diakok = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("DiakokDb");
+            SqlDataReader myReader;
+
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@diakid", id);
+                    myReader = myCommand.ExecuteReader();
+                    diakok.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult("Deleted Successfully!");
         }
     }
 }
